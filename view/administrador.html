@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>administrador</title>
+</head>
+<body>
+    Administrador
+    <a href="javascript:void(0);" class="logout" onclick="logout()">Cerrar Sesión</a>
+    <script>
+        if (localStorage.getItem("loggedInUser") !== "administrador") {
+            window.location.href = "../index.html"; 
+        }
+        function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "../index.html";
+        }
+    </script>
+</body>
+</html>

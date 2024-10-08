@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cajero</title>
+    <link rel="stylesheet" href="../css/cajero.css">
+</head>
+<body>
+
+    <div class="info-bar">
+        <h1 class="tipo">Cajero</h1>
+
+        <div class="profile-container">
+            <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
+        </div>
+        <img src="../assets/img/companylogo.png" class="complogo">
+    </div>
+
+    <div class="productos-container">
+        <div class="titulo-productos">
+            <h1>Productos</h1>
+        </div>
+        <div id="products" class="product-list"></div>
+    </div>
+
+    <div class="carrito-container">
+        <div class="titulo-productos">
+            <h1>Carrito</h1>
+        </div>
+        <div id="cart" class="cart-list"></div>
+    </div>
+
+    <div class="factura-container">
+        <button id="generate-invoice" onclick="generateInvoice()">Generar Factura</button>
+        <div class="titulo-productos">
+            <h1>Factura</h1>
+        </div>
+        <div id="invoice" class="invoice-list"></div>
+    </div>
+
+    <span id="menu-btn" onclick="openNav()">☰ Menú</span>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Facturación</a>
+        <button class="logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+
+    <script>
+        if (localStorage.getItem("loggedInUser") !== "cajero") {
+            window.location.href = "../index.html"; 
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "../index.html";
+        }
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "33vh";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+
+    <script src="../js/cajero.js"></script>
+    
+</body>
+</html>
