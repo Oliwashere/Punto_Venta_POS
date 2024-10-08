@@ -19,6 +19,7 @@ function login(loginData) {
     .then(data => {
         // Guardar el token JWT en localStorage
         localStorage.setItem('jwt', data.token);
+        localStorage.setItem('empleado', JSON.stringify(data.empleado));  // Guardar la información del empleado
 
         // Obtener el rol del usuario
         const userRole = data.rol;
@@ -29,10 +30,10 @@ function login(loginData) {
             localStorage.setItem("loggedInUser", "cajero");
             window.location.href = './view/cajero.html';  // Redirigir a la página del cajero
         } else if (userRole === 'Gerente') {
-            localStorage.setItem("loggedInUser", "cajero");
+            localStorage.setItem("loggedInUser", "gerente");
             window.location.href = './view/gerente.html';  // Redirigir a la página del gerente
         } else if (userRole === 'Administrador') {
-            localStorage.setItem("loggedInUser", "cajero");
+            localStorage.setItem("loggedInUser", "administrador");
             window.location.href = './view/administrador.html';  // Redirigir a la página del administrador
         } else {
             document.getElementById('error').textContent = 'Rol no válido';

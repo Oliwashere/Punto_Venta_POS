@@ -1,4 +1,5 @@
 // URL del backend para productos y ventas
+let globalProducts = [];
 const productosUrl = 'http://localhost:8080/productos';
 const ventasUrl = 'http://localhost:8080/ventas';
 
@@ -20,6 +21,7 @@ async function fetchProductos() {
 
         const products = await response.json();
         renderProducts(products);
+        globalProducts = products;
     } catch (error) {
         console.error('Error:', error);
         alert('No se pudieron cargar los productos.');
@@ -36,6 +38,7 @@ function renderProducts(products) {
         productItem.classList.add("product-item");
         productItem.innerHTML = `
             <span>${product.nombre} - $${product.precioUnitario} (Stock: ${product.cantidadDisponible})</span>
+            <input type="number" id="quantity-${product.id}" min="1" max="${product.cantidadDisponible}" value="1">
             <button onclick="addToCart(${product.id})">Agregar</button>
         `;
         productContainer.appendChild(productItem);
@@ -44,6 +47,9 @@ function renderProducts(products) {
 
 // Agregar un producto al carrito
 function addToCart(productId) {
+    // Obtener la cantidad seleccionada
+    const quantity = parseInt(document.getElementById(`quantity-${productId}`).value);
+    
     fetch(`${productosUrl}/${productId}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
@@ -52,15 +58,27 @@ function addToCart(productId) {
     })
     .then(response => response.json())
     .then(product => {
-        if (product.cantidadDisponible > 0) {
-            cart.push({...product, cantidad: 1});  // Agregar con cantidad inicial de 1
+        if (product.cantidadDisponible >= quantity) {
+            cart.push({...product, cantidad: quantity});  // Agregar con la cantidad seleccionada
             renderCart();
+
+            // Actualizar el stock en el backend
+            updateProductStock(productId, product.cantidadDisponible - quantity);
         } else {
-            alert("Producto sin stock disponible");
+            alert("Cantidad solicitada no disponible en stock");
         }
     })
     .catch(error => {
         console.error('Error al agregar producto:', error);
+    });
+}
+
+function updateProductStock(productId, newStock) {
+    globalProducts.forEach(function(e){
+        if(e.id === productId){
+            e.cantidadDisponible = newStock;
+            console.log(e.cantidadDisponible);            
+        }
     });
 }
 
@@ -91,7 +109,98 @@ function removeFromCart(index) {
     renderCart();
 }
 
-// Generar factura
+// Obtener los datos del empleado desde localStorage
+function obtenerEmpleadoDesdeLocalStorage() {
+    const empleado = JSON.parse(localStorage.getItem('empleado'));  // Obtener la información del empleado desde localStorage
+    if (!empleado) {
+        alert('No se ha encontrado la información del empleado en localStorage.');
+        return null;
+    }
+    return empleado;  // Retornar la información del empleado directamente
+}
+
+// Registrar la venta en el backend
+async function registrarVenta(total) {
+    const empleado = obtenerEmpleadoDesdeLocalStorage();
+    
+    if (!empleado) {
+        alert('No se pudo obtener la información del empleado.');
+        return;
+    }
+
+    // Estructura de la venta, con cliente como null por ahora
+    const venta = {
+        numeroVenta: generarNumeroVenta(),  // Generar un número de venta único
+        fechaVenta: new Date().toISOString(),  // Fecha actual en formato ISO
+        total: total,
+        empleado: empleado,  // Empleado obtenido de localStorage
+        cliente: null  // Cliente puede ir como null
+    };
+
+    try {
+        const response = await fetch(ventasUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(venta)
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al registrar la venta');
+        }
+
+        console.log('Venta registrada exitosamente.');
+        alert('Venta registrada exitosamente.');
+    } catch (error) {
+        console.error('Error al registrar la venta:', error);
+        alert('Hubo un error al registrar la venta.');
+    }
+}
+
+// Generar número de venta único
+function generarNumeroVenta() {
+    const randomNumber = Math.floor(Math.random() * 10000);
+    return `VENTA${randomNumber.toString().padStart(4, '0')}`;
+}
+
+// Actualizar stock de cada producto al generar la factura
+async function updateStockOnInvoice() {
+    try {
+        // Recorrer los productos en el carrito
+        for (const product of cart) {
+            const newStock = product.cantidadDisponible - product.cantidad;
+
+            // Enviar la solicitud PUT al backend con la estructura completa del producto
+            await fetch(`${productosUrl}/${product.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: product.id,
+                    codigoProducto: product.codigoProducto,
+                    nombre: product.nombre,
+                    descripcion: product.descripcion,
+                    precioUnitario: product.precioUnitario,
+                    cantidadDisponible: newStock  // Actualizar la cantidad disponible
+                })
+            });
+
+            // Actualizar el stock también en la variable globalProducts
+            updateProductStock(product.id, newStock);
+        }
+
+        console.log('Stock actualizado exitosamente.');
+    } catch (error) {
+        console.error('Error al actualizar el stock:', error);
+        alert('Hubo un error al generar la factura y actualizar el stock.');
+    }
+}
+
+// Modificar la función de generar factura para actualizar el stock y registrar la venta
 async function generateInvoice() {
     if (cart.length === 0) {
         alert("El carrito está vacío.");
@@ -99,21 +208,16 @@ async function generateInvoice() {
     }
 
     let total = 0;
-    const ventaProductos = [];
 
+    // Calcular el total de la compra
     for (const product of cart) {
         total += product.precioUnitario * product.cantidad;
-        ventaProductos.push({
-            producto_id: product.id,
-            cantidad: product.cantidad,
-            precio: product.precioUnitario
-        });
     }
 
-    const iva = total * 0.16;
+    const iva = total * 0.19;
     const totalConIva = total + iva;
 
-    // Mostrar la factura
+    // Mostrar la factura en la interfaz
     const invoiceContainer = document.getElementById("invoice");
     invoiceContainer.innerHTML = '';  // Limpiar factura previa
     cart.forEach(product => {
@@ -130,61 +234,20 @@ async function generateInvoice() {
     `;
     invoiceContainer.appendChild(totalElement);
 
-    // Registrar la venta en el backend
-    const ventaData = {
-        numeroVenta: `VENTA-${Date.now()}`,  // Generar un número de venta único
-        total: totalConIva,
-        empleado_id: localStorage.getItem('loggedInUserId'),
-        productos: ventaProductos
-    };
+    // Actualizar el stock de los productos en el backend
+    await updateStockOnInvoice();
 
-    try {
-        const response = await fetch(ventasUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-            },
-            body: JSON.stringify(ventaData)
-        });
+    // Registrar la venta
+    await registrarVenta(totalConIva);
 
-        if (!response.ok) {
-            throw new Error('Error al registrar la venta');
-        }
+    // Limpiar el carrito después de generar la factura
+    cart = [];
+    renderCart();
 
-        const venta = await response.json();
-
-        // Registrar detalles de la venta
-        await Promise.all(ventaProductos.map(async (producto) => {
-            const detalleData = {
-                venta_id: venta.id,
-                producto_id: producto.producto_id,
-                cantidad: producto.cantidad,
-                precio: producto.precio
-            };
-
-            const detalleResponse = await fetch(`${ventasUrl}/detalle`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-                },
-                body: JSON.stringify(detalleData)
-            });
-
-            if (!detalleResponse.ok) {
-                throw new Error('Error al registrar el detalle de la venta');
-            }
-        }));
-
-        alert('Venta registrada exitosamente');
-        cart = [];
-        renderCart();
-    } catch (error) {
-        console.error('Error al registrar la venta:', error);
-        alert('Hubo un error al registrar la venta');
-    }
+    // Actualizar la lista de productos
+    await fetchProductos(); // <-- Agregar esta línea
 }
+
 
 // Cargar productos cuando la página esté lista
 window.onload = function() {
