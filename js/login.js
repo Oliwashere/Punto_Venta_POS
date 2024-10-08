@@ -27,13 +27,13 @@ function login(loginData) {
         // Redirigir según el rol del usuario
         if (userRole === 'Cajero') {
             localStorage.setItem("loggedInUser", "cajero");
-            window.location.href = '../view/cajero.html';  // Redirigir a la página del cajero
+            window.location.href = './view/cajero.html';  // Redirigir a la página del cajero
         } else if (userRole === 'Gerente') {
             localStorage.setItem("loggedInUser", "cajero");
-            window.location.href = '../view/gerente.html';  // Redirigir a la página del gerente
+            window.location.href = './view/gerente.html';  // Redirigir a la página del gerente
         } else if (userRole === 'Administrador') {
             localStorage.setItem("loggedInUser", "cajero");
-            window.location.href = '../view/administrador.html';  // Redirigir a la página del administrador
+            window.location.href = './view/administrador.html';  // Redirigir a la página del administrador
         } else {
             document.getElementById('error').textContent = 'Rol no válido';
         }
