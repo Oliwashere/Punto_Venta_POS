@@ -3,19 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>administrador</title>
+    <title>Administrador</title>
+    <link rel="stylesheet" href="../css/gerente.css">
 </head>
 <body>
-    Administrador
-    <a href="javascript:void(0);" class="logout" onclick="logout()">Cerrar Sesión</a>
+
+    <div class="info-bar">
+        <h1 class="tipo">Administrador</h1>
+
+        <div class="profile-container">
+            <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
+        </div>
+        <img src="../assets/img/companylogo.png" class="complogo">
+    </div>
+
+    <span id="menu-btn" onclick="openNav()">☰ Menú</span>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="./administrador.html">Facturación</a>
+        <a href="./productos-admin.html">Productos</a>
+        <a href="./ventas-admin.html">Ventas</a>
+        <button class="logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+
     <script>
-        if (localStorage.getItem("loggedInUser") !== "administrador") {
-            window.location.href = "../index.html"; 
+    if (localStorage.getItem("loggedInUser") !== "administrador") {
+        window.location.href = "../index.html"; 
+    }
+    function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "../index.html";
+    }
+
+    function openNav() {
+            document.getElementById("mySidenav").style.width = "33vh";
         }
-        function logout() {
-        localStorage.removeItem("loggedInUser");
-        window.location.href = "../index.html";
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
         }
     </script>
+
 </body>
 </html>

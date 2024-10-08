@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar / Editar Producto</title>
+    <link rel="stylesheet" href="../css/gerente.css">
+</head>
+<body>
+
+    <div class="info-bar">
+        <h1 class="tipo">Administrador</h1>
+
+        <div class="profile-container">
+            <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
+        </div>
+        <img src="../assets/img/companylogo.png" class="complogo">
+    </div>
+
+    <h1 id="form-title">Registrar Nuevo Producto</h1>
+
+    <form id="product-form">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" required>
+
+        <label for="codigoProducto">codigoProducto:</label>
+        <input type="text" id="codigoProducto" name="codigoProducto" required>
+
+        <label for="precio">Precio Unitario:</label>
+        <input type="number" id="precio" name="precio" step="0.01" required>
+
+        <label for="cantidad">Cantidad Disponible:</label>
+        <input type="number" id="cantidad" name="cantidad" required>
+
+        <button type="submit" id="submit-button">Registrar Producto</button>
+    </form>
+
+    <span id="menu-btn" onclick="openNav()">☰ Menú</span>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="./gerente.html">Productos</a>
+        <a href="./ventas.html">Ventas</a>
+        <a href="./registrarProducto.html" id="new-product-btn">Registrar producto</a>
+        <button class="logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+
+    <script>
+    if (localStorage.getItem("loggedInUser") !== "gerente") {
+        window.location.href = "../index.html"; 
+    }
+    function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "../index.html";
+    }
+
+    function openNav() {
+            document.getElementById("mySidenav").style.width = "33vh";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+
+    <script src="../js/productos.js"></script>
+</body>
+</html>

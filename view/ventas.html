@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos</title>
+    <title>Gerente</title>
     <link rel="stylesheet" href="../css/gerente.css">
 </head>
 <body>
@@ -14,14 +14,12 @@
         <div class="profile-container">
             <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
         </div>
+        <img src="../assets/img/companylogo.png" class="complogo">
     </div>
 
-    <div class="productos-container">
-        <div class="titulo-productos">
-            <h1>Productos</h1>
-        </div>
-        <div id="products" class="product-list"></div>
-    </div>
+    <h1>Registro de Ventas</h1>
+
+    <div id="ventas"></div>
 
     <span id="menu-btn" onclick="openNav()">☰ Menú</span>
 
@@ -34,15 +32,15 @@
     </div>
 
     <script>
-        if (localStorage.getItem("loggedInUser") !== "gerente") {
-            window.location.href = "../index.html";
-        }
-        function logout() {
-            localStorage.removeItem("loggedInUser");
-            window.location.href = "../index.html";
-        }
+    if (localStorage.getItem("loggedInUser") !== "gerente") {
+        window.location.href = "../index.html"; 
+    }
+    function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "../index.html";
+    }
 
-        function openNav() {
+    function openNav() {
             document.getElementById("mySidenav").style.width = "33vh";
         }
 
@@ -50,6 +48,7 @@
             document.getElementById("mySidenav").style.width = "0";
         }
     </script>
-    <script src="../js/productos.js"></script>
+    <script src="../js/ventas.js"></script>
+    
 </body>
 </html>
