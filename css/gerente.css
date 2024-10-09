@@ -83,7 +83,7 @@ body {
     position: absolute;
     top: 2vh;
     left: 2vh;
-    color: #818181; /* Este color estaba duplicado */
+    color: #818181;
     transition: 0.6s;
     font-family: "poppins-regular";
 }
@@ -205,7 +205,7 @@ body {
     border-top: none;
     border-right: none;
     border-left: none ;
-    border-color: white;    
+    border-color: white;
     border-width: 0.1vh;
     pointer-events: none
 }
@@ -252,9 +252,9 @@ body {
     left: 35vh;
     backdrop-filter: blur(2vh);
     transition: 0.6s;
-    display: flex; /* Añadido para usar flexbox */
-    flex-direction: column; /* Apilar elementos verticalmente */
-    align-items: center; /* Centrar horizontalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .titulo-ventas {
@@ -264,17 +264,17 @@ body {
     border-top: none;
     border-right: none;
     border-left: none;
-    border-color: white;    
+    border-color: white;
     border-width: 0.1vh;
     pointer-events: none;
-    text-align: center; /* Centrar el texto */
+    text-align: center;
 }
 
 .titulo-ventas h1 {
     font-family: 'poppins-bold';
     font-size: 3vh;
     color: #ffffff;
-    margin: 0; /* Eliminar márgenes para mejor centrado */
+    margin: 0;
 }
 
 .ventas-list {
@@ -366,4 +366,72 @@ body {
 #submit-button {
     margin-top: 2vh; 
     padding: 1vh 3vh;
+    cursor:pointer;
+}
+
+.empleados-container {
+    position: absolute;
+    width: 120vh;
+    height: 89vh;
+    border-style: solid;
+    border-radius: 2vh;
+    border-color: white;
+    border-width: 0.1vh;
+    top: 10vh;
+    left: 35vh;
+    backdrop-filter: blur(2vh);
+    transition: 0.6s;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
+
+.titulo-empleados {
+    width: 100%;
+    height: 5vh;
+    border-style: solid;
+    border-top: none;
+    border-right: none;
+    border-left: none ;
+    border-color: white;    
+    border-width: 0.1vh;
+    pointer-events: none;
+    text-align: center;
+}
+
+.titulo-empleados h1 {
+    font-family: 'poppins-bold';
+    font-size: 3vh;
+    color: #ffffff;
+    margin: 0;
+}
+
+.empleados-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; 
+    font-size: 3vh;
+    font-family: 'poppins-regular';
+    color: white;
+    max-height: 82.5vh; 
+    overflow-y: auto;
+    transition: 0.6s;
+}
+
+.empleados-list label {
+    margin-bottom: 1vh; 
+    text-align: center; 
+}
+
+.empleados-list input {
+    margin-bottom: 2vh; 
+    width: 80%; 
+    padding: 0.5vh; 
+}
+
+#submit-button {
+    margin-top: 2vh; 
+    padding: 1vh 3vh;
+    cursor:pointer;
 }

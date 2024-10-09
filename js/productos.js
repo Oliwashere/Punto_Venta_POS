@@ -1,5 +1,5 @@
 // URL del backend para productos y ventas
-const productosUrl = 'http://localhost:8080/productos';
+const productosUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/productos';
 let globalProducts = [];
 
 // Obtener productos y renderizarlos

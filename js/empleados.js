@@ -1,6 +1,6 @@
 // URL del backend para empleados y usuarios
-const empleadosUrl = 'http://localhost:8080/empleados';
-const usuariosUrl = 'http://localhost:8080/usuarios'; // URL para obtener usuarios
+const empleadosUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/empleados';
+const usuariosUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/usuarios'; // URL para obtener usuarios
 let globalEmployees = [];
 
 // Obtener empleados y renderizarlos
@@ -35,9 +35,11 @@ function renderEmployees(employees) {
             const employeeItem = document.createElement("div");
             employeeItem.classList.add("employee-item");
             employeeItem.innerHTML = `
+                <div class="venta-item">>
                 <span>${employee.nombres} ${employee.apellidos} - ${employee.telefono} (Estado: ${employee.estado})</span>
                 <button onclick="editEmployee(${employee.id})">Editar</button>
                 <button onclick="deleteEmployee(${employee.id})">Eliminar</button>
+                </div>
             `;
             employeeContainer.appendChild(employeeItem);
         });
@@ -96,6 +98,9 @@ async function fetchEmpleadoById(employeeId) {
 
         const employee = await response.json();
         populateForm(employee);
+
+        // Cargar los usuarios disponibles y asegurar incluir el usuario actual del empleado
+        loadUsuarios(employee.usuario.id); // Pasamos el ID del usuario actual
     } catch (error) {
         console.error('Error:', error);
         alert('No se pudo cargar la información del empleado.');
@@ -111,10 +116,6 @@ function populateForm(employee) {
     document.getElementById("telefono").value = employee.telefono;
     document.getElementById("estado").value = employee.estado;
 
-    // Seleccionar el usuario correspondiente en el select
-    const usuarioSelect = document.getElementById("usuario-select");
-    usuarioSelect.value = employee.usuario.id;
-
     // Seleccionar el rol correspondiente en el select
     document.getElementById("rol").value = employee.rol.id;
 
@@ -123,8 +124,8 @@ function populateForm(employee) {
     document.getElementById("submit-button").innerText = "Actualizar Empleado";
 }
 
-// Función para cargar los usuarios en el select
-async function loadUsuarios() {
+// Función para cargar los usuarios en el select, mostrando el usuario actual y los disponibles
+async function loadUsuarios(usuarioActualId = null) {
     try {
         console.log("Iniciando carga de usuarios...");
 
@@ -162,21 +163,54 @@ async function loadUsuarios() {
         // Limpiar el select antes de agregar los usuarios
         usuarioSelect.innerHTML = '<option value="">Seleccionar usuario</option>';
         
-        usuarios.forEach(usuario => {
+        // Filtrar usuarios que solo están en estado "disponible" o son el usuario actual
+        const usuariosDisponibles = usuarios.filter(usuario => 
+            usuario.estado === "disponible" || usuario.id === usuarioActualId
+        );
+
+        usuariosDisponibles.forEach(usuario => {
             if (usuario && usuario.id && usuario.usuario) { // Verificar que cada usuario tenga los campos necesarios
                 const option = document.createElement('option');
                 option.value = usuario.id; // El ID del usuario
                 option.textContent = usuario.usuario; // El nombre del usuario
+
+                // Seleccionar el usuario actual si es el empleado que se está editando
+                if (usuario.id === usuarioActualId) {
+                    option.selected = true;
+                }
+
                 usuarioSelect.appendChild(option);
             } else {
                 console.warn('Usuario con datos incompletos:', usuario);
             }
         });
+
+        if (usuariosDisponibles.length === 0) {
+            console.log("No hay usuarios disponibles.");
+        }
     } catch (error) {
         console.error('Error al cargar los usuarios:', error);
         alert(`No se pudieron cargar los usuarios. Detalle: ${error.message}`);
     }
 }
+
+// Inicializar la página de registrar/editar empleado
+window.onload = function() {
+    console.log("Cargando página...");
+
+    const employeeId = getQueryParam('id');
+    if (employeeId) {
+        fetchEmpleadoById(employeeId);
+    } else {
+        loadUsuarios(); // Cargar usuarios solo si no estamos editando un empleado
+    }
+
+    // Cargar empleados solo si estamos en la página de gestión de empleados
+    if (document.getElementById("employees")) {
+        fetchEmpleados();
+    }
+};
+
 
 // Registrar o actualizar empleado
 document.getElementById("employee-form")?.addEventListener("submit", async function (event) {
@@ -240,25 +274,9 @@ document.getElementById("employee-form")?.addEventListener("submit", async funct
             alert('Empleado registrado exitosamente.');
         }
 
-        window.location.href = "./administrador.html";
+        window.location.href = "./empleados.html";
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
     }
 });
-
-// Inicializar la página de registrar/editar empleado
-window.onload = function() {
-    console.log("Cargando página...");
-    loadUsuarios(); // Cargar usuarios en el select
-
-    const employeeId = getQueryParam('id');
-    if (employeeId) {
-        fetchEmpleadoById(employeeId);
-    }
-
-    // Cargar empleados solo si estamos en la página de gestión de empleados
-    if (document.getElementById("employees")) {
-        fetchEmpleados();
-    }
-};

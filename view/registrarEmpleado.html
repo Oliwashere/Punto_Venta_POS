@@ -14,47 +14,49 @@
         <div class="profile-container">
             <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
         </div>
-        <img src="../assets/img/companylogo.png" class="complogo">
     </div>
 
-    <h1 id="form-title">Registrar Empleado</h1>
-    <form id="employee-form">
-        <label for="identificacion">Identificación:</label>
-        <input type="text" id="identificacion" required>
+    <div class="empleados-container">
+        <div class="titulo-empleados">
+            <h1 id="form-title">Productos</h1>
+        </div>
+        <form id="employee-form" class="empleados-list">
+            <label for="identificacion">Identificación:</label>
+            <input type="text" id="identificacion" required>
+            
+            <label for="nombres">Nombres:</label>
+            <input type="text" id="nombres" required>
         
-        <label for="nombres">Nombres:</label>
-        <input type="text" id="nombres" required>
-    
-        <label for="apellidos">Apellidos:</label>
-        <input type="text" id="apellidos" required>
-    
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" required>
-    
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" required>
-    
-        <label for="estado">Estado:</label>
-        <select id="estado" required>
-            <option value="Activo">Activo</option>
-            <option value="Inactivo">Inactivo</option>
-        </select>
-    
-        <label for="usuario">Usuario:</label>
-        <!-- Select para elegir un usuario desde el backend -->
-        <select id="usuario-select" required>
-            <option value="">Seleccionar usuario</option>
-        </select>
-    
-        <label for="rol">Rol:</label>
-        <select id="rol" required>
-            <option value="1">Cajero</option>
-            <option value="2">Gerente</option>
-            <option value="3">Administrador</option>
-        </select>
-    
-        <button type="submit" id="submit-button">Registrar Empleado</button>
-    </form>
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" required>
+        
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required>
+        
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" required>
+        
+            <label for="estado">Estado:</label>
+            <select id="estado" required>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+        
+            <label for="usuario">Usuario:</label>
+            <!-- Select para elegir un usuario desde el backend -->
+            <select id="usuario-select" required>
+                <option value="">Seleccionar usuario</option>
+            </select>
+        
+            <label for="rol">Rol:</label>
+            <select id="rol" required>
+                <option value="1">Cajero</option>
+                <option value="2">Gerente</option>
+                <option value="3">Administrador</option>
+            </select>
+        
+            <button type="submit" id="submit-button">Registrar Empleado</button>
+    </div>
     
 
     <span id="menu-btn" onclick="openNav()">☰ Menú</span>

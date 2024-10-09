@@ -1,5 +1,5 @@
 // URL del backend para la autenticación
-const loginUrl = 'http://localhost:8080/auth/login';
+const loginUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/auth/login';
 
 // Función para hacer la solicitud POST de autenticación
 function login(loginData) {

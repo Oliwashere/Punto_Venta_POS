@@ -1,7 +1,7 @@
 // URL del backend para productos y ventas
 let globalProducts = [];
-const productosUrl = 'http://localhost:8080/productos';
-const ventasUrl = 'http://localhost:8080/ventas';
+const productosUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/productos';
+const ventasUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/ventas';
 
 // Variables para el carrito
 let cart = [];
@@ -77,7 +77,7 @@ function updateProductStock(productId, newStock) {
     globalProducts.forEach(function(e){
         if(e.id === productId){
             e.cantidadDisponible = newStock;
-            console.log(e.cantidadDisponible);            
+            console.log(e.cantidadDisponible);
         }
     });
 }

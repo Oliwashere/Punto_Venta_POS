@@ -1,4 +1,4 @@
-const ventasUrl = 'http://localhost:8080/ventas';
+const ventasUrl = 'http://172.16.101.164:8080/demo-0.0.1-SNAPSHOT/ventas';
 
 // Obtener el registro de ventas
 async function fetchVentas() {
