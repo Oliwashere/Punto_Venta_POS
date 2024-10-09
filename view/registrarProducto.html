@@ -9,34 +9,37 @@
 <body>
 
     <div class="info-bar">
-        <h1 class="tipo">Administrador</h1>
+        <h1 class="tipo">Gerente</h1>
 
         <div class="profile-container">
             <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
         </div>
-        <img src="../assets/img/companylogo.png" class="complogo">
     </div>
 
-    <h1 id="form-title">Registrar Nuevo Producto</h1>
+    <div class="productos-container2">
+        <div class="titulo-productos2">
+            <h1 id="form-title">Productos</h1>
+        </div>
+        <form id="product-form" class="product-list2">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" required>
+    
+            <label for="codigoProducto">codigoProducto:</label>
+            <input type="text" id="codigoProducto" name="codigoProducto" required>
+    
+            <label for="precio">Precio Unitario:</label>
+            <input type="number" id="precio" name="precio" step="0.01" required>
+    
+            <label for="cantidad">Cantidad Disponible:</label>
+            <input type="number" id="cantidad" name="cantidad" required>
+    
+            <button type="submit" id="submit-button">Registrar Producto</button>
+        </form>
 
-    <form id="product-form">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-        
-        <label for="descripcion">Descripción:</label>
-        <input type="text" id="descripcion" name="descripcion" required>
-
-        <label for="codigoProducto">codigoProducto:</label>
-        <input type="text" id="codigoProducto" name="codigoProducto" required>
-
-        <label for="precio">Precio Unitario:</label>
-        <input type="number" id="precio" name="precio" step="0.01" required>
-
-        <label for="cantidad">Cantidad Disponible:</label>
-        <input type="number" id="cantidad" name="cantidad" required>
-
-        <button type="submit" id="submit-button">Registrar Producto</button>
-    </form>
+    </div>
 
     <span id="menu-btn" onclick="openNav()">☰ Menú</span>
 

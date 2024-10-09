@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrador</title>
-    <link rel="stylesheet" href="../css/gerente.css">
+    <link rel="stylesheet" href="../css/cajero.css">
 </head>
 <body>
 
@@ -17,13 +17,38 @@
         <img src="../assets/img/companylogo.png" class="complogo">
     </div>
 
+    <div class="productos-container">
+        <div class="titulo-productos">
+            <h1>Productos</h1>
+        </div>
+        <div id="products" class="product-list"></div>
+    </div>
+
+    <div class="carrito-container">
+        <div class="titulo-productos">
+            <h1>Carrito</h1>
+        </div>
+        <div id="cart" class="cart-list"></div>
+    </div>
+
+    <div class="factura-container">
+        <button id="generate-invoice" onclick="generateInvoice()">Generar Factura</button>
+        <div class="titulo-productos">
+            <h1>Factura</h1>
+        </div>
+        <div id="invoice" class="invoice-list"></div>
+    </div>
+
     <span id="menu-btn" onclick="openNav()">☰ Menú</span>
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="./administrador.html">Facturación</a>
-        <a href="./productos-admin.html">Productos</a>
-        <a href="./ventas-admin.html">Ventas</a>
+        <a href="./productosAdmin.html">Productos</a>
+        <a href="./registrarProductoAdmin.html" id="new-product-btn">Registrar producto</a>
+        <a href="./ventasAdmin.html">Ventas</a>
+        <a href="./empleados.html">Empleados</a>
+        <a href="./registrarEmpleado.html">Registrar empleado</a>
         <button class="logout" onclick="logout()">Cerrar sesión</button>
     </div>
 
@@ -44,6 +69,8 @@
             document.getElementById("mySidenav").style.width = "0";
         }
     </script>
+
+    <script src="../js/cajero.js"></script>
 
 </body>
 </html>

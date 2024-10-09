@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar / Editar Empleado</title>
+    <link rel="stylesheet" href="../css/gerente.css">
+</head>
+<body>
+
+    <div class="info-bar">
+        <h1 class="tipo">Administrador</h1>
+
+        <div class="profile-container">
+            <img src="../assets/img/profile.png" id="profile-btn" class="perfil" onclick="toggleProfile()">
+        </div>
+        <img src="../assets/img/companylogo.png" class="complogo">
+    </div>
+
+    <h1 id="form-title">Registrar Empleado</h1>
+    <form id="employee-form">
+        <label for="identificacion">Identificación:</label>
+        <input type="text" id="identificacion" required>
+        
+        <label for="nombres">Nombres:</label>
+        <input type="text" id="nombres" required>
+    
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" required>
+    
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" required>
+    
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" required>
+    
+        <label for="estado">Estado:</label>
+        <select id="estado" required>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+        </select>
+    
+        <label for="usuario">Usuario:</label>
+        <!-- Select para elegir un usuario desde el backend -->
+        <select id="usuario-select" required>
+            <option value="">Seleccionar usuario</option>
+        </select>
+    
+        <label for="rol">Rol:</label>
+        <select id="rol" required>
+            <option value="1">Cajero</option>
+            <option value="2">Gerente</option>
+            <option value="3">Administrador</option>
+        </select>
+    
+        <button type="submit" id="submit-button">Registrar Empleado</button>
+    </form>
+    
+
+    <span id="menu-btn" onclick="openNav()">☰ Menú</span>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="./administrador.html">Facturación</a>
+        <a href="./productosAdmin.html">Productos</a>
+        <a href="./registrarProductoAdmin.html" id="new-product-btn">Registrar producto</a>
+        <a href="./ventasAdmin.html">Ventas</a>
+        <a href="./empleados.html">Empleados</a>
+        <a href="./registrarEmpleado.html">Registrar empleado</a>
+        <button class="logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+
+    <script>
+        if (localStorage.getItem("loggedInUser") !== "administrador") {
+            window.location.href = "../index.html"; 
+        }
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "../index.html";
+        }
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "33vh";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+
+    <script src="../js/empleados.js"></script>
+</body>
+</html>
